@@ -59,6 +59,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
           'https://battleofthebits.org/academy/GroupThread/' + req.response.id + '/', req.response.title)});
         searchEndpoint('lyceum_article/load/', query, (req) =>
           {if (!req.response.response_type) addResult(results, 'Lyceum', req.response.profile_url, req.response.title)});
+        searchEndpoint('palette/load/', query, (req) =>
+          {if (!req.response.response_type) addResult(results, 'Palette', 
+          'https://battleofthebits.org/barracks/PaletteEditor/' + req.response.id + '/', req.response.title)});
         break;
     }
   }
