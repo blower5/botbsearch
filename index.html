@@ -9,14 +9,18 @@
   </head>
   <body>
     <h1>Battle of the Bits API search</h1>
-    <p>Search battles, BotBrs, entries, lyceum articles, and threads by name/title</p>
+    <p>Search battles, BotBrs, entries, lyceum articles, and threads by name/title/id</p>
     <form action="" method="get">
       <input type="text" name="q" id="qinput" required>
+      <select name="qtype" id="qtype">
+        <option value="name">By name</option>
+        <option value="id">By id</option>
+      </select>
       <input type="submit" value="Search">
     </form>
     <ul id="results"></ul>
     <footer>
-      <p><a href="https://github.com/jangler/botbsearch">View source code on GitHub</a></p>
+      <p><a href="https://github.com/blower5/botbsearch">View source code on GitHub</a></p>
     </footer>
   </body>
 </html>
