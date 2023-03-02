@@ -22,19 +22,44 @@ function searchEndpoint(endpoint, query, loadfunc) {
 window.addEventListener('DOMContentLoaded', (event) => {
   const query = new URLSearchParams(window.location.search).get('q');
   if (query) {
+    const qtype = new URLSearchParams(window.location.search).get('qtype');
+    
     const qinput = document.getElementById('qinput');
     qinput.value = query;
+    const qdropdown = document.getElementById('qtype');
+    qdropdown.value = qtype;
     const results = document.getElementById('results');
-    searchEndpoint('battle/search/', query, (req) =>
-      req.response.forEach(e => addResult(results, 'Battle', e.url, e.title)));
-    searchEndpoint('botbr/search/', query, (req) =>
-      req.response.forEach(e => addResult(results, 'BotBr', e.profile_url, e.name)));
-    searchEndpoint('entry/search/', query, (req) =>
-      req.response.forEach(e => addResult(results, 'Entry', e.profile_url, e.title)));
-    searchEndpoint('group_thread/search/', query, (req) =>
-      req.response.forEach(e => addResult(results, 'Thread',
-        'https://battleofthebits.org/academy/GroupThread/' + e.id + '/', e.title)));
-    searchEndpoint('lyceum_article/search/', query, (req) =>
-      req.response.forEach(e => addResult(results, 'Lyceum', e.profile_url, e.title)));
+    
+    //if null default to name
+    switch (qtype?qtype:"name") {
+      
+      case "name":
+        searchEndpoint('battle/search/', query, (req) =>
+          req.response.forEach(e => addResult(results, 'Battle', e.url, e.title)));
+        searchEndpoint('botbr/search/', query, (req) =>
+          req.response.forEach(e => addResult(results, 'BotBr', e.profile_url, e.name)));
+        searchEndpoint('entry/search/', query, (req) =>
+          req.response.forEach(e => addResult(results, 'Entry', e.profile_url, e.title)));
+        searchEndpoint('group_thread/search/', query, (req) =>
+          req.response.forEach(e => addResult(results, 'Thread',
+            'https://battleofthebits.org/academy/GroupThread/' + e.id + '/', e.title)));
+        searchEndpoint('lyceum_article/search/', query, (req) =>
+          req.response.forEach(e => addResult(results, 'Lyceum', e.profile_url, e.title)));
+        break;
+        
+      case "id":
+        searchEndpoint('battle/load/', query, (req) =>
+          {if (!req.response.response_type) addResult(results, 'Battle', req.response.url, req.response.title)});
+        searchEndpoint('botbr/load/', query, (req) =>
+          {if (!req.response.response_type) addResult(results, 'BotBr', req.response.profile_url, req.response.name)});
+        searchEndpoint('entry/load/', query, (req) =>
+          {if (!req.response.response_type) addResult(results, 'Entry', req.response.profile_url, req.response.title)});
+        searchEndpoint('group_thread/load/', query, (req) =>
+          {if (!req.response.response_type) addResult(results, 'Thread',
+          'https://battleofthebits.org/academy/GroupThread/' + req.response.id + '/', req.response.title)});
+        searchEndpoint('lyceum_article/load/', query, (req) =>
+          {if (!req.response.response_type) addResult(results, 'Lyceum', req.response.profile_url, req.response.title)});
+        break;
+    }
   }
 });
