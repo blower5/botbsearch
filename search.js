@@ -13,7 +13,7 @@ function addResult(ul, typestr, url, title) {
 function searchEndpoint(endpoint, query, loadfunc) {
   let req = new XMLHttpRequest();
   req.addEventListener('load', (event) => loadfunc(req));
-  req.open('GET', 'https://battleofthebits.org/api/v1/' + endpoint + encodeURIComponent(query));
+  req.open('GET', 'https://battleofthebits.com/api/v1/' + endpoint + encodeURIComponent(query));
   req.responseType = 'json';
   req.send();
 }
@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
           req.response.forEach(e => addResult(results, 'Entry', e.profile_url, e.title)));
         searchEndpoint('group_thread/search/', query, (req) =>
           req.response.forEach(e => addResult(results, 'Thread',
-            'https://battleofthebits.org/academy/GroupThread/' + e.id + '/', e.title)));
+            'https://battleofthebits.com/academy/GroupThread/' + e.id + '/', e.title)));
         searchEndpoint('lyceum_article/search/', query, (req) =>
           req.response.forEach(e => addResult(results, 'Lyceum', e.profile_url, e.title)));
         break;
@@ -56,12 +56,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
           {if (!req.response.response_type) addResult(results, 'Entry', req.response.profile_url, req.response.title)});
         searchEndpoint('group_thread/load/', query, (req) =>
           {if (!req.response.response_type) addResult(results, 'Thread',
-          'https://battleofthebits.org/academy/GroupThread/' + req.response.id + '/', req.response.title)});
+          'https://battleofthebits.com/academy/GroupThread/' + req.response.id + '/', req.response.title)});
         searchEndpoint('lyceum_article/load/', query, (req) =>
           {if (!req.response.response_type) addResult(results, 'Lyceum', req.response.profile_url, req.response.title)});
         searchEndpoint('palette/load/', query, (req) =>
           {if (!req.response.response_type) addResult(results, 'Palette', 
-          'https://battleofthebits.org/barracks/PaletteEditor/' + req.response.id + '/', req.response.title)});
+          'https://battleofthebits.com/barracks/PaletteEditor/' + req.response.id + '/', req.response.title)});
         break;
     }
   }
