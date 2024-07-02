@@ -9,19 +9,36 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
   </head>
   <body>
-    <h1>Battle of the Bits API search</h1>
-    <p>Search battles, BotBrs, entries, lyceum articles, and threads by name/title/id</p>
-    <form action="" method="get">
-      <input type="text" name="q" id="qinput" required>
-      <select name="qtype" id="qtype">
-        <option value="name">By name</option>
-        <option value="id">By id</option>
-      </select>
-      <input type="submit" value="Search">
-    </form>
-    <ul id="results"></ul>
-    <footer>
-      <p><a href="https://github.com/blower5/botbsearch">View source code on GitHub</a></p>
-    </footer>
+    <!-- <h1>Battle of the Bits API search</h1> -->
+	<div class="inner">
+		<div id="PALETTE_MENU">
+			<div class="inner">
+				<p style="margin-top: 16px; margin-bottom: 2px;">pallete id:</p>
+				<input type="text" name="p" id="pinput">
+			</div>
+		</div>
+		<div id="LOGO">
+			<span class="logo">
+				<a href="/">
+				<div class="logo0">battle of the bits search</div>
+				<div class="logo1">battle of the bits search</div>
+				<div class="logo2">battle of the bits search</div>
+				</a>
+			</span>
+		</div>
+		<p>Search battles, BotBrs, entries, lyceum articles, and threads by name/title/id</p>
+		<form action="" method="get">
+		  <input type="text" name="q" id="qinput" required>
+		  <select name="qtype" id="qtype">
+			<option value="name">By name</option>
+			<option value="id">By id</option>
+		  </select>
+		  <input type="submit" value="Search">
+		</form>
+		<ul id="results"></ul>
+		<footer>
+		  <p><a href="https://github.com/blower5/botbsearch">View source code on GitHub</a> ⸻ This website uses cookies to store your palette</p>
+		</footer>
+	</div>
   </body>
 </html>
