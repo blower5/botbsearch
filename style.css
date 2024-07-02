@@ -4,6 +4,7 @@
 	--color3: #4a3553;
 	--color4: #000000cc;
 	--color5: #3e2239;
+	--textshadow: #666666;
 }
 
 html, body {
@@ -15,7 +16,7 @@ html, body {
 	font-size: 12px;
 	height: 100%;
 	text-rendering: optimizeLegibility;
-	text-shadow: 0px 1px 1px #752827;
+	text-shadow: 0px 1px 1px var(--textshadow);
 }
 html {
   /*background-color: #eee;*/
