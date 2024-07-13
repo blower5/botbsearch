@@ -42,12 +42,28 @@ ul {
 	font-size: 14px;
 }
 
+li {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+ul li:nth-of-type(2n) {
+  background: #fff1
+}
+ul li:nth-of-type(2n+1) {
+  background: #0001
+}
+
 a {
 	text-decoration: none;
 	color: var(--color2);
 }
 a:hover {
 	color: var(--color1);
+}
+
+.rightinfo {
+	margin: 0px;
+	float: right;
 }
 
 #LOGO {
