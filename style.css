@@ -36,34 +36,50 @@ body {
 	margin-right: 10px;
 }
 
-ul {
-	list-style: none;
+#resulttable {
+	width: 100%;
+	border-spacing: 0px;
 	padding-left: 5px;
+	margin-top: 14px;
+	font-family: Verdana, Helvetica, sans-serif;
 	font-size: 14px;
+	text-align:left;
+	/* line-height: 11px; */
+	color: #0000;
+    background-color: #0000;
 }
 
-li {
-  padding-left: 4px;
-  padding-right: 4px;
+th {
+	font-family: Verdana, Helvetica, sans-serif !important;
+	font-size: 14px !important;
+	background-color: #0004 !important;
 }
-ul li:nth-of-type(2n) {
+tbody > tr:hover > td {
+	background-color: #0004 !important;
+}
+
+tr:nth-child(2n) > td {
   background: #fff1
 }
-ul li:nth-of-type(2n+1) {
+tr:nth-child(2n+1) > td {
   background: #0001
+}
+td {
+  padding-top: 0px !important;
+  padding-bottom: 2px !important;
+  border-bottom: 0px !important;
 }
 
 a {
 	text-decoration: none;
 	color: var(--color2);
 }
-a:hover {
+td:hover > a {
 	color: var(--color1);
 }
 
 .rightinfo {
-	margin: 0px;
-	float: right;
+	text-align:right;
 }
 
 #LOGO {

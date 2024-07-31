@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Battle of the Bits API search</title>
     <script src="search.js"></script>
+    <script src="jquery-3.7.0.js"></script>
+    <script src="tablesorter/jquery.tablesorter.js"></script>
     <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="tablesorter/theme.dark.min.css" type="text/css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
   </head>
   <body>
@@ -43,7 +46,18 @@
 		  </select>
 		  <input type="submit" value="Search">
 		</form>
-		<ul id="results"></ul>
+		<table class="tablesorter" id="resulttable">
+			<thead>
+				<tr>
+					<th>Type</td>
+					<th>Name</td>
+					<th>Date</td>
+					<th>Info</td>
+				</tr>
+			</thead>
+			<tbody id="results">
+			</tbody>
+		</table>
 		<footer>
 		  <p><a href="https://github.com/blower5/botbsearch">View source code on GitHub</a> ⸻ This website uses cookies to store your palette</p>
 		</footer>
