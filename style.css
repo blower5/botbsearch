@@ -1,3 +1,4 @@
+/* color variables defaults, will be overrided by palette menu */
 :root {
 	--color1: #cacaca;
 	--color2: #f76700;
@@ -36,6 +37,10 @@ body {
 	margin-right: 10px;
 }
 
+
+
+
+
 #resulttable {
 	width: 100%;
 	border-spacing: 0px;
@@ -49,6 +54,7 @@ body {
     background-color: #0000;
 }
 
+/* table theme overrides */
 th {
 	font-family: Verdana, Helvetica, sans-serif !important;
 	font-size: 14px !important;
@@ -57,17 +63,19 @@ th {
 tbody > tr:hover > td {
 	background-color: #0004 !important;
 }
+td {
+  padding-top: 0px !important;
+  padding-bottom: 2px !important;
+  border-bottom: 0px !important;
+  color: var(--color1) !important;
+}
+
 
 tr:nth-child(2n) > td {
   background: #fff1
 }
 tr:nth-child(2n+1) > td {
   background: #0001
-}
-td {
-  padding-top: 0px !important;
-  padding-bottom: 2px !important;
-  border-bottom: 0px !important;
 }
 
 a {
@@ -81,6 +89,11 @@ td:hover > a {
 .rightinfo {
 	text-align:right;
 }
+
+
+
+
+
 
 #LOGO {
 	position: relative;
@@ -114,6 +127,32 @@ td:hover > a {
 	top: 10px;
 	color: var(--color1);
 	z-index: 30;
+}
+
+
+input {
+	background-color: var(--color5);
+	color: var(--color1);
+	border: 2px solid;
+	border-color: rgb(from var(--color4) r g b / 255);
+	border-radius: 5px;
+}
+select, .button {
+	background-color: var(--color3);
+	color: var(--color2);
+	border-style: none;
+	border-radius: 3px;
+	padding-left: 6px;
+	padding-right: 6px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+.button {
+	cursor: pointer;
+}
+select:focus, .button:hover {
+	background-color: var(--color1);
+	color: var(--color5);
 }
 
 #PALETTE_MENU {
