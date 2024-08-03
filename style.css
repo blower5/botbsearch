@@ -150,6 +150,10 @@ select, .button {
 .button {
 	cursor: pointer;
 }
+select:hover {
+	background-color: rgb(from var(--color3) calc(r*.9) calc(g*.9) calc(b*.9));
+	color: rgb(from var(--color2) calc(r*.9) calc(g*.9) calc(b*.9));
+}
 select:focus, .button:hover {
 	background-color: var(--color1);
 	color: var(--color5);
