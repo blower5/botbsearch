@@ -122,13 +122,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
 	if (query) {
 		const qtype = new URLSearchParams(window.location.search).get('qtype');
 		const ftype = new URLSearchParams(window.location.search).get('ftype');
+		
+		//null cases
+		qtype ??= "name";
+		ftype ??= "all";
+		
 		document.getElementById('qinput').value = query;
-		document.getElementById('qtype').value = qtype;
+		document.getElementById('qtype').value = ;
 		document.getElementById('ftype').value = ftype;
 		const results = document.getElementById('results');
-	
-	//if null default to name
-		switch (qtype?qtype:"name") {
+		
+		switch (qtype) {
 			case "name":
 			default:
 				searchByName(query,ftype,results);
