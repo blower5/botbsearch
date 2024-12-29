@@ -124,14 +124,11 @@ function formatBattleType(type) {
 //"56s" for low numbers
 //56:56 for seconds over 59
 function formatRuntime(runtime) {
-	runtimeHours = Math.floor(runtime/3600); //lolol hour long playlist
+	runtimeHours = Math.floor(runtime/3600);
 	runtimeMinutes = Math.floor(runtime/60) % 60;
 	runtimeSeconds = runtime%60;
 	if (!(runtimeHours|runtimeMinutes)) {
 		return runtimeSeconds + "s";
-	}
-	if (!runtimeHours) {
-		return runtimeMinutes.toString().padStart(2,"0") + ":" + runtimeSeconds.toString().padStart(2,"0");
 	}
 	return runtimeHours + ":" + runtimeMinutes.toString().padStart(2,"0") + ":" + runtimeSeconds.toString().padStart(2,"0");
 }
@@ -205,6 +202,10 @@ function searchByName(query,ftype,results) {
 			searchEndpoint('entry/search/', query, 'Entry', (data) =>
 				data.forEach(e => addResult(results, 'Entry', e.profile_url, e.title, formatEntryScore(e.score,e.favs), e.datetime)));
 			break;
+		case "playlist":
+			searchEndpoint('playlist/search/', query, 'Playlist', (data) =>
+				data.forEach(e => addResult(results, 'Playlist','https://battleofthebits.com/playlist/View/' + e.id + '/', e.title, e.count+" Items | " + formatRuntime(e.runtime), e.date_create.slice(0,-8))));
+			break;
 		case "thread":
 			searchEndpoint('group_thread/search/', query, 'Thread', (data) =>
 				data.forEach(e => addResult(results, 'Thread','https://battleofthebits.com/academy/GroupThread/' + e.id + '/', e.title, getThreadGroupName(e.group_id), e.first_post_timestamp)));
@@ -221,6 +222,8 @@ function searchByName(query,ftype,results) {
 				data.forEach(e => addResult(results, 'BotBr', e.profile_url, e.name, "Lvl "+e.level, e.create_date)));
 			searchEndpoint('entry/search/', query, 'Entry', (data) =>
 				data.forEach(e => addResult(results, 'Entry', e.profile_url, e.title, formatEntryScore(e.score,e.favs), e.datetime)));
+			searchEndpoint('playlist/search/', query, 'Playlist', (data) =>
+				data.forEach(e => addResult(results, 'Playlist','https://battleofthebits.com/playlist/View/' + e.id + '/', e.title, e.count+" Items | " + formatRuntime(e.runtime), e.date_create.slice(0,-8))));
 			searchEndpoint('group_thread/search/', query, 'Thread', (data) =>
 				data.forEach(e => addResult(results, 'Thread', 'https://battleofthebits.com/academy/GroupThread/' + e.id + '/', e.title, getThreadGroupName(e.group_id), e.first_post_timestamp)));
 			searchEndpoint('lyceum_article/search/', query, 'Lyceum', (data) =>
@@ -229,8 +232,7 @@ function searchByName(query,ftype,results) {
 	}
 }
 function searchByID(query,ftype,results) {
-	//if null default to all
-	switch (ftype?ftype:"all") {
+	switch (ftype) {
 		case "battle":
 			searchEndpoint('battle/load/', query, 'Battle', (data) =>
 				{addResult(results, 'Battle' + formatBattleType(data.type), data.url, data.title, data.entry_count+" Entries", data.start)});
@@ -242,6 +244,10 @@ function searchByID(query,ftype,results) {
 		case "entry":
 			searchEndpoint('entry/load/', query, 'Entry', (data) =>
 				{addResult(results, 'Entry', data.profile_url, data.title, formatEntryScore(data.score,data.favs), data.datetime)});
+			break;
+		case "playlist":
+			searchEndpoint('playlist/load/', query, 'Playlist', (data) =>
+				{addResult(results, 'Playlist','https://battleofthebits.com/playlist/View/' + data.id + '/', data.title, data.count+" Items | " + formatRuntime(data.runtime), data.date_create.slice(0,-8))});
 			break;
 		case "thread":
 			searchEndpoint('group_thread/load/', query, 'Thread', (data) =>
