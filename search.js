@@ -1,43 +1,64 @@
+let statusMap = new Map();
+
 // add a result to an unordered list
 function addResult(tbody, typestr, url, title, extrainfo, datetime) {
-  let tr = document.createElement('tr');
-  let tdtype = document.createElement('td');
-  let tdname = document.createElement('td');
-  let tddate = document.createElement('td');
-  let tdinfo = document.createElement('td');
-  
-  //create left cell of row (type and name)
-  //— <- this is an em dash. I don't know how to type it so I'm putting it here for later
-  tdtype.textContent = typestr;
-  let a = document.createElement('a');
-  a.href = url;
-  a.textContent = title;
-  tdname.appendChild(a);
-  
-  tddate.textContent = datetime.slice(0,10);	
-  
-  tdinfo.textContent = extrainfo;
-  tdinfo.className = "rightinfo";
+	let tr = document.createElement('tr');
+	let tdtype = document.createElement('td');
+	let tdname = document.createElement('td');
+	let tddate = document.createElement('td');
+	let tdinfo = document.createElement('td');
+	
+	//create left cell of row (type and name)
+	//— <- this is an em dash. I don't know how to type it so I'm putting it here for later
+	tdtype.textContent = typestr;
+	let a = document.createElement('a');
+	a.href = url;
+	a.textContent = title;
+	tdname.appendChild(a);
+	
+	tddate.textContent = datetime.slice(0,10);	
+	
+	tdinfo.textContent = extrainfo;
+	tdinfo.className = "rightinfo";
 
-  tr.appendChild(tdtype);
-  tr.appendChild(tdname);
-  tr.appendChild(tddate);
-  tr.appendChild(tdinfo);
+	tr.appendChild(tdtype);
+	tr.appendChild(tdname);
+	tr.appendChild(tddate);
+	tr.appendChild(tdinfo);
 
-  tbody.appendChild(tr);
-  
-  //update tablesorter, do not re-sort
-  $.tablesorter.updateAll( $(".tablesorter")[0].config, false);
+	tbody.appendChild(tr);
+	
+	//update tablesorter, do not re-sort
+	$.tablesorter.updateAll( $(".tablesorter")[0].config, false);
+}
+
+function setStatus(typestr, status) {
+	statusMap.set(typestr, status);
+	let p = document.querySelector('#status');
+	let vs = [...statusMap.values()];
+	if (vs.includes('waiting')) {
+		p.textContent = 'Searching.';
+		vs.forEach( e => {
+				if (e == "done") p.textContent = p.textContent + "." //loading bar effect
+		})
+	} else if (vs.includes('error')) {
+		p.textContent = 'API error!';
+	} else {
+		p.textContent = 'Done!';
+	}
 }
 
 // call loadfunc on an botb API xmlhttprequest for the given endpoint
-function searchEndpoint(endpoint, query, loadfunc) {
-  let req = new XMLHttpRequest();
-  //this if statement catches any errors
-  req.addEventListener('load', (event) => {if (!req.response.response_type) loadfunc(req)});
-  req.open('GET', 'https://battleofthebits.com/api/v1/' + endpoint + encodeURIComponent(query));
-  req.responseType = 'json';
-  req.send();
+function searchEndpoint(endpoint, query, typestr, loadfunc) {
+	setStatus(typestr, 'waiting');
+	fetch('https://battleofthebits.com/api/v1/' + endpoint + encodeURIComponent(query.trim()))
+		.then(response => {
+			setStatus(typestr, 'done');
+			response.json().then(loadfunc);
+		})
+		.catch(error => {
+			setStatus(typestr, 'error');
+		});
 }
 
 //I have no clue how the textshadow color is actually calculated. this function gets passed color1 and returns an altered version
@@ -51,22 +72,24 @@ function getTextShadow(hex) {
 
 //update palette cookies
 function updatePalette(id) {
-	let palettereq = new XMLHttpRequest();
-	palettereq.addEventListener('load', (event) => setPaletteCookies(palettereq));
-	palettereq.open('GET', 'https://battleofthebits.com/api/v1/palette/load/' + encodeURIComponent(id));
-	palettereq.responseType = 'json';
-	palettereq.send();
+	if (id == id.match(/[0-9]+/)[0]) { //pass numbers only
+		let palettereq = new XMLHttpRequest();
+		palettereq.addEventListener('load', (event) => setPaletteCookies(palettereq));
+		palettereq.open('GET', 'https://battleofthebits.com/api/v1/palette/load/' + encodeURIComponent(id));
+		palettereq.responseType = 'json';
+		palettereq.send();
+	}
 }
 
 //return value for a cookie's name
 function getCookie(name){
-    var pattern = RegExp(name + "=.[^;]*")
-    var matched = document.cookie.match(pattern)
-    if(matched){
-        var cookie = matched[0].split('=')
-        return cookie[1]
-    }
-    return false
+	var pattern = RegExp(name + "=.[^;]*")
+	var matched = document.cookie.match(pattern)
+	if(matched){
+		var cookie = matched[0].split('=')
+		return cookie[1]
+	}
+	return false
 }
 
 //synthesize a big hex number of all the hexcodes concatenated and store
@@ -169,40 +192,39 @@ window.addEventListener('DOMContentLoaded', (event) => {
 });
 
 function searchByName(query,ftype,results) {
-	//if null default to all
-	switch (ftype?ftype:"all") {
+	switch (ftype) {
 		case "battle":
-			searchEndpoint('battle/search/', query, (req) =>
-					req.response.forEach(e => addResult(results, 'Battle' + formatBattleType(e.type), e.url, e.title, e.entry_count+" Entries", e.start)));
+			searchEndpoint('battle/search/', query, 'Battle', (data) =>
+					data.forEach(e => addResult(results, 'Battle' + formatBattleType(e.type), e.url, e.title, e.entry_count+" Entries", e.start)));
 			break;
 		case "botbr":
-			searchEndpoint('botbr/search/', query, (req) =>
-				req.response.forEach(e => addResult(results, 'BotBr', e.profile_url, e.name, "Lvl "+e.level, e.create_date)));
+			searchEndpoint('botbr/search/', query, 'BotBr', (data) =>
+				data.forEach(e => addResult(results, 'BotBr', e.profile_url, e.name, "Lvl "+e.level, e.create_date)));
 			break;
 		case "entry":
-			searchEndpoint('entry/search/', query, (req) =>
-				req.response.forEach(e => addResult(results, 'Entry', e.profile_url, e.title, formatEntryScore(e.score,e.favs), e.datetime)));
+			searchEndpoint('entry/search/', query, 'Entry', (data) =>
+				data.forEach(e => addResult(results, 'Entry', e.profile_url, e.title, formatEntryScore(e.score,e.favs), e.datetime)));
 			break;
 		case "thread":
-			searchEndpoint('group_thread/search/', query, (req) =>
-				req.response.forEach(e => addResult(results, 'Thread','https://battleofthebits.com/academy/GroupThread/' + e.id + '/', e.title, getThreadGroupName(e.group_id), e.first_post_timestamp)));
+			searchEndpoint('group_thread/search/', query, 'Thread', (data) =>
+				data.forEach(e => addResult(results, 'Thread','https://battleofthebits.com/academy/GroupThread/' + e.id + '/', e.title, getThreadGroupName(e.group_id), e.first_post_timestamp)));
 			break;
 		case "lyceum":
-			searchEndpoint('lyceum_article/search/', query, (req) =>
-				req.response.forEach(e => addResult(results, 'Lyceum', e.profile_url, e.title, e.views + " Views", "---")));
+			searchEndpoint('lyceum_article/search/', query, 'Lyceum', (data) =>
+				data.forEach(e => addResult(results, 'Lyceum', e.profile_url, e.title, e.views + " Views", "---")));
 			break;
 		case "all":
 		default:
-			searchEndpoint('battle/search/', query, (req) =>
-				req.response.forEach(e => addResult(results, 'Battle' + formatBattleType(e.type), e.url, e.title, e.entry_count+" Entries", e.start)));
-			searchEndpoint('botbr/search/', query, (req) =>
-				req.response.forEach(e => addResult(results, 'BotBr', e.profile_url, e.name, "Lvl "+e.level, e.create_date)));
-			searchEndpoint('entry/search/', query, (req) =>
-				req.response.forEach(e => addResult(results, 'Entry', e.profile_url, e.title, formatEntryScore(e.score,e.favs), e.datetime)));
-			searchEndpoint('group_thread/search/', query, (req) =>
-				req.response.forEach(e => addResult(results, 'Thread','https://battleofthebits.com/academy/GroupThread/' + e.id + '/', e.title, getThreadGroupName(e.group_id), e.first_post_timestamp)));
-			searchEndpoint('lyceum_article/search/', query, (req) =>
-				req.response.forEach(e => addResult(results, 'Lyceum', e.profile_url, e.title, e.views + " Views", "---")));
+			searchEndpoint('battle/search/', query, 'Battle', (data) =>
+				data.forEach(e => addResult(results, 'Battle' + formatBattleType(e.type), e.url, e.title, e.entry_count+" Entries", e.start)));
+			searchEndpoint('botbr/search/', query, 'BotBr', (data) =>
+				data.forEach(e => addResult(results, 'BotBr', e.profile_url, e.name, "Lvl "+e.level, e.create_date)));
+			searchEndpoint('entry/search/', query, 'Entry', (data) =>
+				data.forEach(e => addResult(results, 'Entry', e.profile_url, e.title, formatEntryScore(e.score,e.favs), e.datetime)));
+			searchEndpoint('group_thread/search/', query, 'Thread', (data) =>
+				data.forEach(e => addResult(results, 'Thread', 'https://battleofthebits.com/academy/GroupThread/' + e.id + '/', e.title, getThreadGroupName(e.group_id), e.first_post_timestamp)));
+			searchEndpoint('lyceum_article/search/', query, 'Lyceum', (data) =>
+				data.forEach(e => addResult(results, 'Lyceum', e.profile_url, e.title, e.views + " Views", "---")));
 			break;
 	}
 }
@@ -210,42 +232,41 @@ function searchByID(query,ftype,results) {
 	//if null default to all
 	switch (ftype?ftype:"all") {
 		case "battle":
-			searchEndpoint('battle/load/', query, (req) =>
-				{addResult(results, 'Battle' + formatBattleType(req.response.type), req.response.url, req.response.title, req.response.entry_count+" Entries", req.response.start)});
+			searchEndpoint('battle/load/', query, 'Battle', (data) =>
+				{addResult(results, 'Battle' + formatBattleType(data.type), data.url, data.title, data.entry_count+" Entries", data.start)});
 			break;
 		case "botbr":
-			searchEndpoint('botbr/load/', query, (req) =>
-				{addResult(results, 'BotBr', req.response.profile_url, req.response.name, "Lvl "+req.response.level, req.response.create_date)});
+			searchEndpoint('botbr/load/', query, 'BotBr', (data) =>
+				{addResult(results, 'BotBr', data.profile_url, data.name, "Lvl "+data.level, data.create_date)});
 			break;
 		case "entry":
-			searchEndpoint('entry/load/', query, (req) =>
-				{addResult(results, 'Entry', req.response.profile_url, req.response.title, formatEntryScore(req.response.score,req.response.favs), req.response.datetime)});
+			searchEndpoint('entry/load/', query, 'Entry', (data) =>
+				{addResult(results, 'Entry', data.profile_url, data.title, formatEntryScore(data.score,data.favs), data.datetime)});
 			break;
 		case "thread":
-			searchEndpoint('group_thread/load/', query, (req) =>
-				{addResult(results, 'Thread','https://battleofthebits.com/academy/GroupThread/' + req.response.id + '/', req.response.title, getThreadGroupName(req.response.group_id), req.response.first_post_timestamp)});
+			searchEndpoint('group_thread/load/', query, 'Thread', (data) =>
+				{addResult(results, 'Thread','https://battleofthebits.com/academy/GroupThread/' + data.id + '/', data.title, getThreadGroupName(data.group_id), data.first_post_timestamp)});
 			break;
 		case "lyceum":
-			searchEndpoint('lyceum_article/load/', query, (req) =>
-				{addResult(results, 'Lyceum', req.response.profile_url, req.response.title, req.response.views + " Views", "---")});
+			searchEndpoint('lyceum_article/load/', query, 'Lyceum', (data) =>
+				{addResult(results, 'Lyceum', data.profile_url, data.title, data.views + " Views", "---")});
 			break;
 		case "all":
 		default:
-			searchEndpoint('battle/load/', query, (req) =>
-				{addResult(results, 'Battle' + formatBattleType(req.response.type), req.response.url, req.response.title, req.response.entry_count+" Entries", req.response.start)});
-			searchEndpoint('botbr/load/', query, (req) =>
-				{addResult(results, 'BotBr', req.response.profile_url, req.response.name, "Lvl "+req.response.level, req.response.create_date)});
-			searchEndpoint('entry/load/', query, (req) =>
-				{addResult(results, 'Entry', req.response.profile_url, req.response.title, formatEntryScore(req.response.score,req.response.favs), req.response.datetime)});
-			searchEndpoint('group_thread/load/', query, (req) =>
-				{addResult(results, 'Thread','https://battleofthebits.com/academy/GroupThread/' + req.response.id + '/', req.response.title, getThreadGroupName(req.response.group_id), req.response.first_post_timestamp)});
-			searchEndpoint('playlist/load/', query, (req) =>
-				{addResult(results, 'Playlist','https://battleofthebits.com/playlist/View/' + req.response.id + '/', req.response.title, req.response.count+" Items | " + formatRuntime(req.response.runtime), req.response.date_create.slice(0,-8))});
-			searchEndpoint('lyceum_article/load/', query, (req) =>
-				{addResult(results, 'Lyceum', req.response.profile_url, req.response.title, req.response.views + " Views", "---")});
-			searchEndpoint('palette/load/', query, (req) =>
-				{addResult(results, 'Palette','https://battleofthebits.com/barracks/PaletteEditor/' + req.response.id + '/', req.response.title, "---", "---")});
-			
+			searchEndpoint('battle/load/', query, 'Battle', (data) =>
+				{addResult(results, 'Battle' + formatBattleType(data.type), data.url, data.title, data.entry_count+" Entries", data.start)});
+			searchEndpoint('botbr/load/', query, 'BotBr', (data) =>
+				{addResult(results, 'BotBr', data.profile_url, data.name, "Lvl "+data.level, data.create_date)});
+			searchEndpoint('entry/load/', query, 'Entry', (data) =>
+				{addResult(results, 'Entry', data.profile_url, data.title, formatEntryScore(data.score,data.favs), data.datetime)});
+			searchEndpoint('group_thread/load/', query, 'Thread', (data) =>
+				{addResult(results, 'Thread','https://battleofthebits.com/academy/GroupThread/' + data.id + '/', data.title, getThreadGroupName(data.group_id), data.first_post_timestamp)});
+			searchEndpoint('playlist/load/', query, 'Playlist', (data) =>
+				{addResult(results, 'Playlist','https://battleofthebits.com/playlist/View/' + data.id + '/', data.title, data.count+" Items | " + formatRuntime(data.runtime), data.date_create.slice(0,-8))});
+			searchEndpoint('lyceum_article/load/', query, 'Lyceum', (data) =>
+				{addResult(results, 'Lyceum', data.profile_url, data.title, data.views + " Views", "---")});
+			searchEndpoint('palette/load/', query, 'Palette', (data) =>
+				{addResult(results, 'Palette','https://battleofthebits.com/barracks/PaletteEditor/' + data.id + '/', data.title, "---", "---")});
 			break;
 	}
 }

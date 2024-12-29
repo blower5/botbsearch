@@ -39,6 +39,14 @@ body {
 
 
 
+#status {
+  color: var(--color1);
+  font-family: monospace;
+  margin-top: 14px;
+  margin-left: 3px;
+  margin-bottom: 0px;
+}
+
 
 
 #resulttable {
