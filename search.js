@@ -121,15 +121,10 @@ function formatBattleType(type) {
 }
 
 //takes an input of seconds and formats it nicely 
-//"56s" for low numbers
-//56:56 for seconds over 59
 function formatRuntime(runtime) {
 	runtimeHours = Math.floor(runtime/3600);
 	runtimeMinutes = Math.floor(runtime/60) % 60;
 	runtimeSeconds = runtime%60;
-	if (!(runtimeHours|runtimeMinutes)) {
-		return runtimeSeconds + "s";
-	}
 	return runtimeHours + ":" + runtimeMinutes.toString().padStart(2,"0") + ":" + runtimeSeconds.toString().padStart(2,"0");
 }
 
