@@ -97,6 +97,22 @@ function formatBattleType(type) {
 	return "\u00A0Δ"; //non-breaking space
 }
 
+//takes an input of seconds and formats it nicely 
+//"56s" for low numbers
+//56:56 for seconds over 59
+function formatRuntime(runtime) {
+	runtimeHours = Math.floor(runtime/3600); //lolol hour long playlist
+	runtimeMinutes = Math.floor(runtime/60) % 60;
+	runtimeSeconds = runtime%60;
+	if (!(runtimeHours|runtimeMinutes)) {
+		return runtimeSeconds + "s";
+	}
+	if (!runtimeHours) {
+		return runtimeMinutes.toString().padStart(2,"0") + ":" + runtimeSeconds.toString().padStart(2,"0");
+	}
+	return runtimeHours + ":" + runtimeMinutes.toString().padStart(2,"0") + ":" + runtimeSeconds.toString().padStart(2,"0");
+}
+
 // run when dom content loads
 window.addEventListener('DOMContentLoaded', (event) => {
 	//initialize table sorter
@@ -223,10 +239,13 @@ function searchByID(query,ftype,results) {
 				{addResult(results, 'Entry', req.response.profile_url, req.response.title, formatEntryScore(req.response.score,req.response.favs), req.response.datetime)});
 			searchEndpoint('group_thread/load/', query, (req) =>
 				{addResult(results, 'Thread','https://battleofthebits.com/academy/GroupThread/' + req.response.id + '/', req.response.title, getThreadGroupName(req.response.group_id), req.response.first_post_timestamp)});
+			searchEndpoint('playlist/load/', query, (req) =>
+				{addResult(results, 'Playlist','https://battleofthebits.com/playlist/View/' + req.response.id + '/', req.response.title, req.response.count+" Items | " + formatRuntime(req.response.runtime), req.response.date_create.slice(0,-8))});
 			searchEndpoint('lyceum_article/load/', query, (req) =>
 				{addResult(results, 'Lyceum', req.response.profile_url, req.response.title, req.response.views + " Views", "---")});
 			searchEndpoint('palette/load/', query, (req) =>
 				{addResult(results, 'Palette','https://battleofthebits.com/barracks/PaletteEditor/' + req.response.id + '/', req.response.title, "---", "---")});
+			
 			break;
 	}
 }
