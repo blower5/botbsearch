@@ -94,7 +94,7 @@ function formatBattleType(type) {
 	//It seems all XHBs are type 3 but majors can be type 1 or 0... one of
 	//the advent calendars was type 25?
 	if (type == 3) return ""
-	return " Δ";
+	return "\u00A0Δ"; //non-breaking space
 }
 
 // run when dom content loads
@@ -128,12 +128,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 	const query = new URLSearchParams(window.location.search).get('q');
 	if (query) {
-		const qtype = new URLSearchParams(window.location.search).get('qtype');
-		const ftype = new URLSearchParams(window.location.search).get('ftype');
+		const qtypeSearchParams = new URLSearchParams(window.location.search).get('qtype');
+		const ftypeSearchParams = new URLSearchParams(window.location.search).get('ftype');
 		
 		//null cases
-		qtype ??= "name";
-		ftype ??= "all";
+		const qtype = qtypeSearchParams ?? "name";
+		const ftype = ftypeSearchParams ?? "all";
 		
 		document.getElementById('qinput').value = query;
 		document.getElementById('qtype').value = qtype;
