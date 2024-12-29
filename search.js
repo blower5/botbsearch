@@ -89,6 +89,14 @@ function formatEntryScore(score,favs) {
 	return (parseFloat(score) + parseInt(favs)).toFixed(1) + " Scofavs";
 }
 
+function formatBattleType(type) {
+	//note for later: I have no clue what the battle types actually mean.
+	//It seems all XHBs are type 3 but majors can be type 1 or 0... one of
+	//the advent calendars was type 25?
+	if (type == 3) return ""
+	return " Δ";
+}
+
 // run when dom content loads
 window.addEventListener('DOMContentLoaded', (event) => {
 	//initialize table sorter
@@ -128,7 +136,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 		ftype ??= "all";
 		
 		document.getElementById('qinput').value = query;
-		document.getElementById('qtype').value = ;
+		document.getElementById('qtype').value = qtype;
 		document.getElementById('ftype').value = ftype;
 		const results = document.getElementById('results');
 		
@@ -149,7 +157,7 @@ function searchByName(query,ftype,results) {
 	switch (ftype?ftype:"all") {
 		case "battle":
 			searchEndpoint('battle/search/', query, (req) =>
-					req.response.forEach(e => addResult(results, 'Battle', e.url, e.title, e.entry_count+" Entries", e.start)));
+					req.response.forEach(e => addResult(results, 'Battle' + formatBattleType(e.type), e.url, e.title, e.entry_count+" Entries", e.start)));
 			break;
 		case "botbr":
 			searchEndpoint('botbr/search/', query, (req) =>
@@ -170,7 +178,7 @@ function searchByName(query,ftype,results) {
 		case "all":
 		default:
 			searchEndpoint('battle/search/', query, (req) =>
-				req.response.forEach(e => addResult(results, 'Battle', e.url, e.title, e.entry_count+" Entries", e.start)));
+				req.response.forEach(e => addResult(results, 'Battle' + formatBattleType(e.type), e.url, e.title, e.entry_count+" Entries", e.start)));
 			searchEndpoint('botbr/search/', query, (req) =>
 				req.response.forEach(e => addResult(results, 'BotBr', e.profile_url, e.name, "Lvl "+e.level, e.create_date)));
 			searchEndpoint('entry/search/', query, (req) =>
@@ -187,7 +195,7 @@ function searchByID(query,ftype,results) {
 	switch (ftype?ftype:"all") {
 		case "battle":
 			searchEndpoint('battle/load/', query, (req) =>
-				{addResult(results, 'Battle', req.response.url, req.response.title, req.response.entry_count+" Entries", req.response.start)});
+				{addResult(results, 'Battle' + formatBattleType(req.response.type), req.response.url, req.response.title, req.response.entry_count+" Entries", req.response.start)});
 			break;
 		case "botbr":
 			searchEndpoint('botbr/load/', query, (req) =>
@@ -208,7 +216,7 @@ function searchByID(query,ftype,results) {
 		case "all":
 		default:
 			searchEndpoint('battle/load/', query, (req) =>
-				{addResult(results, 'Battle', req.response.url, req.response.title, req.response.entry_count+" Entries", req.response.start)});
+				{addResult(results, 'Battle' + formatBattleType(req.response.type), req.response.url, req.response.title, req.response.entry_count+" Entries", req.response.start)});
 			searchEndpoint('botbr/load/', query, (req) =>
 				{addResult(results, 'BotBr', req.response.profile_url, req.response.name, "Lvl "+req.response.level, req.response.create_date)});
 			searchEndpoint('entry/load/', query, (req) =>
