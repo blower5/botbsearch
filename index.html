@@ -31,7 +31,7 @@
 		</div>
 		<p>Search battles, BotBrs, entries, lyceum articles, and threads by name/title/id</p>
 		<form action="" method="get">
-		  <input type="text" name="q" id="qinput" required>
+		  <input type="text" name="q" id="qinput" placeholder="Search..." required>
 		  <select name="qtype" id="qtype">
 			<option value="name">By name</option>
 			<option value="id">By id</option>
@@ -51,8 +51,9 @@
 		<table class="tablesorter" id="resulttable">
 			<thead>
 				<tr>
-					<th>Type</td>
-					<th>Name</td>
+					<th style="width: 0px;">Type</td>
+					<th style="width: 0px;"></td> <!-- this is the header for the icon column -->
+					<th style="min-width: 300px;">Name</td>
 					<th>Date</td>
 					<th style="min-width: 78px;">Info</td>
 				</tr>
