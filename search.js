@@ -19,11 +19,21 @@ function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
 	//the format parameter is actually their format. Battles with more than one use the string
 	//">1". BotBr's pass their class. Which, as a side note, I didn't know you were even allowed to
 	//use a key called "class".
+	
 	if (format == ">1") {
 		tdicon.textContent = ">1";
-	} else if (format) {
+		tdicon.title = "More than one format";
+	} else {
 		let formaticondiv = document.createElement('div');
 		switch (typestr) {
+			case "Playlist":
+				formaticondiv.className = "botb-icon icons-list";
+				formaticondiv.title = "Playlist";
+				break;
+			case "Lyceum":
+				formaticondiv.className = "botb-icon icons-lyceum";
+				formaticondiv.title = "Lyceum Article";
+				break;
 			case "BotBr":
 				formaticondiv.className = "botb-icon icons-" + format.toLowerCase();
 				formaticondiv.title = format;
@@ -38,8 +48,6 @@ function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
 				break;
 		}
 		tdicon.appendChild(formaticondiv);
-	} else {
-		tdicon.textContent = "-";
 	}
 	
 	let a = document.createElement('a');
