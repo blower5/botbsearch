@@ -12,6 +12,13 @@ function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
 	//— <- this is an em dash. I don't know how to type it so I'm putting it here for later
 	tdtype.textContent = typestr;
 	
+	//Probably somewhat poorly named, the format parameter controls the icon, and changes based
+	//on what kind of result was recieved. Threads pass their group id and not their name, as
+	//not all of their icons match their name, and I felt like a mapping based on id was simpler
+	//than a mapping based on group name. For entries and battles, which use the default case here,
+	//the format parameter is actually their format. Battles with more than one use the string
+	//">1". BotBr's pass their class. Which, as a side note, I didn't know you were even allowed to
+	//use a key called "class".
 	if (format == ">1") {
 		tdicon.textContent = ">1";
 	} else if (format) {
@@ -19,12 +26,17 @@ function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
 		switch (typestr) {
 			case "BotBr":
 				formaticondiv.className = "botb-icon icons-" + format.toLowerCase();
+				formaticondiv.title = format;
+				break;
+			case "Thread":
+				formaticondiv.className = "botb-icon " + getThreadGroupIcon(format);
+				formaticondiv.title = getThreadGroupName(format);
 				break;
 			default:
 				formaticondiv.className = "botb-icon icons-formats-" + format.toLowerCase();
+				formaticondiv.title = format;
 				break;
 		}
-		formaticondiv.title = format; //hover text / tooltip
 		tdicon.appendChild(formaticondiv);
 	} else {
 		tdicon.textContent = "-";
@@ -131,12 +143,21 @@ function updateSpritesheet() {
 }
 
 
-grouplist = ["???","Bulletins","News","???","Entries","Battles","Photos","Updates","n00b s0z","mail","Bugs/Features","Smeesh","Project Dev","BotBrs","Lyceum"];
+const grouplist = ["???","Bulletins","News","???","Entries","Battles","Photos","Updates","n00b s0z","mail","Bugs/Features","Smeesh","Project Dev","BotBrs","Lyceum"];
 function getThreadGroupName(groupnumber) {
-	groupname = grouplist[groupnumber];
+	let groupname = grouplist[groupnumber];
 	groupname ??= "???";
 	//if groupname doesn't exist return with question marks
-	return "In " + groupname;
+	return groupname;
+}
+
+const groupiconlist = ["","bulletins","news","","entries","battles","","updates","n00b","","bug","","updates","botbrs","lyceum"];
+function getThreadGroupIcon(groupnumber) {
+	let groupicon = groupiconlist[groupnumber];
+	if (groupicon) {
+		return "icons-" + groupicon;
+	}
+	return "";
 }
 
 function formatEntryScore(score,favs) {
@@ -243,7 +264,7 @@ function searchByName(query,ftype,results) {
 			break;
 		case "thread":
 			searchEndpoint('group_thread/search/', query, 'Thread', (data) =>
-				data.forEach(e => addResult(results, 'Thread', "", 'https://battleofthebits.com/academy/GroupThread/' + e.id + '/', e.title, getThreadGroupName(e.group_id), e.first_post_timestamp)));
+				data.forEach(e => addResult(results, 'Thread', e.group_id, 'https://battleofthebits.com/academy/GroupThread/' + e.id + '/', e.title, "In " + getThreadGroupName(e.group_id), e.first_post_timestamp)));
 			break;
 		case "lyceum":
 			searchEndpoint('lyceum_article/search/', query, 'Lyceum', (data) =>
@@ -260,7 +281,7 @@ function searchByName(query,ftype,results) {
 			searchEndpoint('playlist/search/', query, 'Playlist', (data) =>
 				data.forEach(e => addResult(results, 'Playlist', "", 'https://battleofthebits.com/playlist/View/' + e.id + '/', e.title, e.count+" Items | " + formatRuntime(e.runtime), e.date_create.slice(0,-8))));
 			searchEndpoint('group_thread/search/', query, 'Thread', (data) =>
-				data.forEach(e => addResult(results, 'Thread', "", 'https://battleofthebits.com/academy/GroupThread/' + e.id + '/', e.title, getThreadGroupName(e.group_id), e.first_post_timestamp)));
+				data.forEach(e => addResult(results, 'Thread', e.group_id, 'https://battleofthebits.com/academy/GroupThread/' + e.id + '/', e.title, "In " + getThreadGroupName(e.group_id), e.first_post_timestamp)));
 			searchEndpoint('lyceum_article/search/', query, 'Lyceum', (data) =>
 				data.forEach(e => addResult(results, 'Lyceum', "", e.profile_url, e.title, e.views + " Views", "---")));
 			break;
@@ -286,7 +307,7 @@ function searchByID(query,ftype,results) {
 			break;
 		case "thread":
 			searchEndpoint('group_thread/load/', query, 'Thread', (data) =>
-				{addResult(results, 'Thread', '', 'https://battleofthebits.com/academy/GroupThread/' + data.id + '/', data.title, getThreadGroupName(data.group_id), data.first_post_timestamp)});
+				{addResult(results, 'Thread', data.group_id, 'https://battleofthebits.com/academy/GroupThread/' + data.id + '/', data.title, "In " + getThreadGroupName(data.group_id), data.first_post_timestamp)});
 			break;
 		case "lyceum":
 			searchEndpoint('lyceum_article/load/', query, 'Lyceum', (data) =>
@@ -301,7 +322,7 @@ function searchByID(query,ftype,results) {
 			searchEndpoint('entry/load/', query, 'Entry', (data) =>
 				{addResult(results, 'Entry', data.format_token, data.profile_url, data.title, formatEntryScore(data.score,data.favs), data.datetime)});
 			searchEndpoint('group_thread/load/', query, 'Thread', (data) =>
-				{addResult(results, 'Thread', '', 'https://battleofthebits.com/academy/GroupThread/' + data.id + '/', data.title, getThreadGroupName(data.group_id), data.first_post_timestamp)});
+				{addResult(results, 'Thread', data.group_id, 'https://battleofthebits.com/academy/GroupThread/' + data.id + '/', data.title, "In " + getThreadGroupName(data.group_id), data.first_post_timestamp)});
 			searchEndpoint('playlist/load/', query, 'Playlist', (data) =>
 				{addResult(results, 'Playlist', '', 'https://battleofthebits.com/playlist/View/' + data.id + '/', data.title, data.count+" Items | " + formatRuntime(data.runtime), data.date_create.slice(0,-8))});
 			searchEndpoint('lyceum_article/load/', query, 'Lyceum', (data) =>
