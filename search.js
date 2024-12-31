@@ -52,11 +52,8 @@ function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
 	
 	let a = document.createElement('a');
 	a.href = url;
-	//edge case where there is one continuous 61+ character word:
-	//add in hyphens. 60 was how many capital 'M's I could fit.
-	//(surprisingly difficult to know how wide a string is.)
 	if (title.match(/\w{60,}/)) {
-		title = title.slice(0,57) + "-" + title.slice(57);
+		a.style.cssText = "word-break: break-all;"
 	}
 	a.textContent = title;
 	tdname.appendChild(a);
@@ -155,7 +152,6 @@ function updateSpritesheet() {
 	spritesheetidreq.responseType = 'json';
 	spritesheetidreq.send();
 }
-
 
 const grouplist = ["???","Bulletins","News","???","Entries","Battles","Photos","Updates","n00b s0z","mail","Bugs/Features","Smeesh","Project Dev","BotBrs","Lyceum"];
 function getThreadGroupName(groupnumber) {
