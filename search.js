@@ -52,6 +52,12 @@ function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
 	
 	let a = document.createElement('a');
 	a.href = url;
+	//edge case where there is one continuous 61+ character word:
+	//add in hyphens. 60 was how many capital 'M's I could fit.
+	//(surprisingly difficult to know how wide a string is.)
+	if (title.match(/\w{60,}/)) {
+		title = title.slice(0,57) + "-" + title.slice(57);
+	}
 	a.textContent = title;
 	tdname.appendChild(a);
 	
