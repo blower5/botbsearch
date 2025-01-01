@@ -30,6 +30,7 @@ body {
   padding-bottom: 1px;
   width: 100%;
   max-width: 960px;
+  min-width: 450px;
   height:auto;
 }
 .inner {

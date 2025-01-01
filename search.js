@@ -1,4 +1,5 @@
 let STATUS_MAP = new Map();
+let MOBILE = false;
 
 // add a result to an unordered list
 function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
@@ -196,6 +197,34 @@ function formatRuntime(runtime) {
 	return runtimeHours + ":" + runtimeMinutes.toString().padStart(2,"0") + ":" + runtimeSeconds.toString().padStart(2,"0");
 }
 
+function updateWidth(width) {
+	if (width <= 750) {
+		if (!MOBILE) {
+			addMobileStyle();
+			MOBILE = true;
+		}
+	} else {
+		if (MOBILE) {
+			removeMobileStyle();
+			MOBILE = false;
+		}
+	}
+}
+
+function addMobileStyle() {
+	$('<link/>', {rel: 'stylesheet', href: "stylemobile.css", id: "stylemobile"}).appendTo('head');
+	console.log("added style");
+}
+
+function removeMobileStyle() {
+	$('#stylemobile').remove();
+	console.log("removed style");
+}
+
+window.addEventListener('resize', (event) => {
+	updateWidth(window.innerWidth);
+});
+
 // run when dom content loads
 window.addEventListener('DOMContentLoaded', (event) => {
 	//initialize table sorter
@@ -207,6 +236,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
 	
 	//fetch newest spritesheet version and add stylesheet
 	updateSpritesheet();
+	
+	updateWidth(window.innerWidth);
 	
 	// ----------------------------------------------------------------------------------------------------------
 	//    palette control
