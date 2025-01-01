@@ -90,6 +90,7 @@ tr:nth-child(2n+1) > td {
 a {
 	text-decoration: none;
 	color: var(--color2);
+	overflow-wrap: anywhere;
 }
 td:hover > a {
 	color: var(--color1);

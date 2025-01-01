@@ -53,9 +53,6 @@ function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
 	
 	let a = document.createElement('a');
 	a.href = url;
-	if (title.match(/\w{60,}/)) {
-		a.style.cssText = "word-break: break-all;"
-	}
 	a.textContent = title;
 	tdname.appendChild(a);
 	
