@@ -86,7 +86,9 @@ tr:nth-child(2n) > td {
 tr:nth-child(2n+1) > td {
   background: #0001
 }
-
+.iconlabel {
+	display: none;
+}
 a {
 	text-decoration: none;
 	color: var(--color2);

@@ -20,6 +20,9 @@ function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
 	//the format parameter is actually their format. Battles with more than one use the string
 	//">1". BotBr's pass their class. Which, as a side note, I didn't know you were even allowed to
 	//use a key called "class".
+
+	let tdiconlabel = document.createElement('p'); //this is so tablesorter can sort the icon column
+	tdiconlabel.className = "iconlabel";
 	
 	if (format == ">1") {
 		tdicon.textContent = ">1";
@@ -48,8 +51,12 @@ function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
 				formaticondiv.title = format;
 				break;
 		}
-		tdicon.appendChild(formaticondiv);
+		tdiconlabel.textContent = formaticondiv.title;
+		tdicon.appendChild(tdiconlabel);	
+		tdicon.appendChild(formaticondiv);	
 	}
+	
+	
 	
 	let a = document.createElement('a');
 	a.href = url;
