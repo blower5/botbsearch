@@ -18,7 +18,7 @@ function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
 	//not all of their icons match their name, and I felt like a mapping based on id was simpler
 	//than a mapping based on group name. For entries and battles, which use the default case here,
 	//the format parameter is actually their format. Battles with more than one use the string
-	//">1". BotBr's pass their class. Which, as a side note, I didn't know you were even allowed to
+	//">1". BotBrs pass their class. Which, as a side note, I didn't know you were even allowed to
 	//use a key called "class".
 
 	let tdiconlabel = document.createElement('p'); //this is so tablesorter can sort the icon column
@@ -59,7 +59,8 @@ function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
 	
 	
 	let a = document.createElement('a');
-	a.href = url;
+	//disable link if url doesn't exist
+	a.href = url ?? "#";
 	a.textContent = title;
 	tdname.appendChild(a);
 	
@@ -231,6 +232,10 @@ window.addEventListener('resize', (event) => {
 
 // run when dom content loads
 window.addEventListener('DOMContentLoaded', (event) => {
+	
+	//pick random subtitle (subtitle list is stored in subtitles.js)
+	$("#randomsubtitle")[0].innerHTML = SUBTITLES[Math.floor(Math.random() * SUBTITLES.length)];
+	
 	//initialize table sorter
 	$(".tablesorter").tablesorter({
 		theme: 'dark',
