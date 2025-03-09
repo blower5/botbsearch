@@ -70,5 +70,4 @@ SUBTITLES = [
 	,"Bbm Gb Bbm Ab Bbm Gb Bbm Ab Bbm Gb Db Ab Bbm Gb Db Ab Bbm Abm6 Db A C#m Bm Cm Fm"
 	,"Asking for extentions since 2005"
 	,"So long, and thanks for all the bits"
-	,
 ];
