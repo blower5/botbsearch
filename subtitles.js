@@ -8,7 +8,7 @@ SUBTITLES = [
 	,"I lvoe searxhing things so much i cannot express it enougbh"
 	,"56"
 	,"somwthing witty and creative"
-	,"<!--Placeholder for search tab subtitle (MAKE SURE TO REPLACE LATER!!!!)-->"
+	,"&lt;!--Placeholder for search tab subtitle (MAKE SURE TO REPLACE LATER!!!!)--&gt;"
 	,"What do you want to search today?"
 	,"Have you drank water recently?"
 	,"Public Toilet died for this."
