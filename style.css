@@ -175,3 +175,16 @@ select:focus, .button:hover {
 	position: relative;
 	float: right;
 }
+
+/*mobile styling*/
+
+@media screen and (max-width: 750px) {
+	.logo {
+		font-size: 24px !important;
+		letter-spacing: -3px !important;
+	}
+	
+	.subtitle {
+		font-size: 9px !important;
+	}
+}
