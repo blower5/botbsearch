@@ -1,5 +1,4 @@
 let STATUS_MAP = new Map();
-let MOBILE = false;
 
 // add a result to an unordered list
 function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
@@ -103,7 +102,7 @@ function searchEndpoint(endpoint, query, typestr, loadfunc) {
 	fetch('https://battleofthebits.com/api/v1/' + endpoint + encodeURIComponent(query.trim()))
 		.then(response => {
 			setStatus(typestr, 'done');
-			response.json().then(loadfunc);
+			if (response.status == 200) response.json().then(loadfunc);
 		})
 		.catch(error => {
 			setStatus(typestr, 'error');
