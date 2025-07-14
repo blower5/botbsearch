@@ -1,5 +1,5 @@
 //subtitles by various community members
-//thanks to Lasertooth, CouldntBeMe, damifortune, icrawfish, dsm5, Opilion, MattMoney, John Favorite, big lumby, TristEndo, DuccBoi, and blower5 (that's me!)
+//thanks to Lasertooth, CouldntBeMe, damifortune, icrawfish, dsm5, Opilion, MattMoney, big lumby, TristEndo, DuccBoi, and blower5 (that's me!)
 SUBTITLES = [
 	"Search your worst, find your best!"
 	,"Vorted bestest search engine since 1323"
@@ -7,7 +7,6 @@ SUBTITLES = [
 	,"FIND IT ALL HERE"
 	,"I lvoe searxhing things so much i cannot express it enougbh"
 	,"56"
-	,"somwthing witty and creative"
 	,"&lt;!--Placeholder for search tab subtitle (MAKE SURE TO REPLACE LATER!!!!)--&gt;"
 	,"What do you want to search today?"
 	,"Have you drank water recently?"
@@ -16,7 +15,6 @@ SUBTITLES = [
 	,"You sure you don't wanna just click through the site pages randomly until you find what you're looking for?"
 	,"Please help they've chained me to this desk and are forcing me to find the results for everyone's searches manually"
 	,"battle of the bits search"
-	,"Absolute sociopathy!"
 	,"botbsearch++"
 	,"Do you even search, bro?"
 	,"online search game"
@@ -63,6 +61,8 @@ SUBTITLES = [
 	,"I forgot"
 	,"A new release of OpenMPT is available!"
 	,"everything you wanted and so much more"
+	
+	//----------blower's arcane pop culture and chiptune references----------
 	,"\"My God, it's full of bits!\""
 	,"what is this 8 bit poop crap"
 	,"I'm quitting chiptune."
@@ -74,4 +74,24 @@ SUBTITLES = [
 	,"This is just like Gorbino's Quest. This is the Gorbino's Quest of search"
 	,"You have been evaluating REAPER for approximately 484 days."
 	,"RIP DESKPOP"
+	,"Push the button, and then, turn the knob."
+	,"4, 8, 15, 16, 23, 42."
+	,"That's Numberwang!"
+	
+	,"Tip: the triangle means major battle."
+	,"Tip: hold shift to sort by multiple columns."
+	,"Tip: an entry's Scofavs is its score added to its favorite count. Entries with 30 or more Scofavs will appear on the radio."
+	
+	,"Tip: ask an admin if you need a render replaced, an xhb rescheduled, or a major entry moved to a different format."
+	,"Tip: reusing an old avatar only costs 56b."
+	,"Tip: reverse thread order, badges ordered by entry count, and other options are available in the settings menu."
+	
+	,"Tip: switching to your pistol is always faster than reloading."
+	,"Tip: shorts are comfortable, and easy to wear."
+	,"Tip: as a Medic, it's better to use an ÜberCharge too early than lose it by being killed."
+	,"Tip: the power of the switch you have pushed will turn □ into !. Your progress will also be saved."
+	,"Tip: to ensure the safe performance of all authorized activities, do not destroy vital testing apparatus."
+	,"Tip: the pump over here comes with a truck."
+	,"Tip: place the laurels in a silk bag to bring them to life."
+	,"Tip: when lava pours out near the sea surface, tremendous volcanic explosions sometimes occur."
 ];
