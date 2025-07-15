@@ -76,6 +76,7 @@ SUBTITLES = [
 	,"RIP DESKPOP"
 	,"Push the button, and then, turn the knob."
 	,"4, 8, 15, 16, 23, 42."
+	,"7, 28, 56, 98, 725, 1323."
 	,"That's Numberwang!"
 	
 	,"Tip: the triangle means major battle."

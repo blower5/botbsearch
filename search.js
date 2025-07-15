@@ -1,7 +1,7 @@
 let STATUS_MAP = new Map();
 
-// add a result to an unordered list
-function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
+// add a result to a table
+function addResult(tbody, typestr, format, url, name, extrainfo, datetime) {
 	let tr = document.createElement('tr');
 	let tdtype = document.createElement('td');
 	let tdicon = document.createElement('td');
@@ -54,13 +54,12 @@ function addResult(tbody, typestr, format, url, title, extrainfo, datetime) {
 		tdicon.appendChild(tdiconlabel);	
 		tdicon.appendChild(formaticondiv);	
 	}
-	
-	
+
 	
 	let a = document.createElement('a');
 	//disable link if url doesn't exist
 	a.href = url ?? "#";
-	a.textContent = title;
+	a.textContent = name;
 	tdname.appendChild(a);
 	
 	tddate.textContent = datetime.slice(0,10);	
@@ -99,7 +98,7 @@ function setStatus(typestr, status) {
 // call loadfunc on an botb API xmlhttprequest for the given endpoint
 function searchEndpoint(endpoint, query, typestr, loadfunc) {
 	setStatus(typestr, 'waiting');
-	fetch('https://battleofthebits.com/api/v1/' + endpoint + encodeURIComponent(query.trim()))
+	fetch('https://battleofthebits.com/api/v1/' + endpoint + encodeURIComponent(query.trim())) //trims off leading and trailing whitespace
 		.then(response => {
 			setStatus(typestr, 'done');
 			if (response.status == 200) response.json().then(loadfunc);
@@ -109,13 +108,23 @@ function searchEndpoint(endpoint, query, typestr, loadfunc) {
 		});
 }
 
-//I have no clue how the textshadow color is actually calculated. this function gets passed color1 and returns an altered version
+//The text shadow color is the average of all 5 palette colors. Really!
+//Takes the full concatenated palette hex and averages it.
 function getTextShadow(hex) {
-	var rgb = [hex.slice(0,2),hex.slice(2,4),hex.slice(4,6)];
-	for (i in rgb) {
-		rgb[i] = Math.round( parseInt(rgb[i],16)*.4+21 ).toString(16);
+	let [r, g, b] = [0, 0, 0];
+	let a = "";
+	
+	for (let i = 0; i < 30; i+=6) {
+		r += parseInt( hex.slice(i  ,i+2), 16 );
+		g += parseInt( hex.slice(i+2,i+4), 16 );
+		b += parseInt( hex.slice(i+4,i+6), 16 );
 	}
-	return rgb[0]+rgb[1]+rgb[2];
+	//normalize, convert to hex, pad with a 0 if necessary, and concatenate
+	[r, g, b].forEach(color => 
+		a += Math.floor(color*.2).toString(16).padStart(2,"0")
+	);
+	
+	return a;
 }
 
 //update palette cookies
@@ -227,7 +236,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 		"; --color3: #"+storedPalette.slice(12,18)+
 		"; --color4: #"+storedPalette.slice(18,24)+
 		"cc; --color5: #"+storedPalette.slice(24,30)+
-		"; --textshadow: #"+getTextShadow(storedPalette.slice(0,6))+";";
+		"; --textshadow: #"+getTextShadow(storedPalette)+";";
 	}
 	
 	//run on enter key in palette text input
@@ -262,6 +271,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
 		}
 	}
 });
+
+//these beastly functions are the way that they are (beastly) because each kind of api request returns things with different
+//names for what botbsearch displays as the same fields. Also searching by ID doesn't return an array. I have previously stared
+//at this for a while and couldn't come up with a nicer looking way to do this, sorry. Some of these could probably be globals
+//if you're a big globals fan.
 
 function searchByName(query,ftype,results) {
 	switch (ftype) {
