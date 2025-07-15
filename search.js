@@ -67,11 +67,7 @@ function addResult(tbody, typestr, format, url, name, extrainfo, datetime) {
 	tdinfo.textContent = extrainfo;
 	tdinfo.className = "rightinfo";
 
-	tr.appendChild(tdtype);
-	tr.appendChild(tdicon);
-	tr.appendChild(tdname);
-	tr.appendChild(tddate);
-	tr.appendChild(tdinfo);
+	[tdtype, tdicon, tdname, tddate, tdinfo].forEach(td => tr.appendChild(td));
 
 	tbody.appendChild(tr);
 	

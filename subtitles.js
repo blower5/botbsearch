@@ -95,4 +95,5 @@ SUBTITLES = [
 	,"Tip: the pump over here comes with a truck."
 	,"Tip: place the laurels in a silk bag to bring them to life."
 	,"Tip: when lava pours out near the sea surface, tremendous volcanic explosions sometimes occur."
+	,"Tip: attack its weak point for massive damage."
 ];
