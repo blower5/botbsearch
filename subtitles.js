@@ -1,5 +1,6 @@
 //subtitles by various community members
-//thanks to Lasertooth, CouldntBeMe, damifortune, icrawfish, dsm5, Opilion, MattMoney, big lumby, TristEndo, DuccBoi, and blower5 (that's me!)
+//thanks to Lasertooth, CouldntBeMe, damifortune, icrawfish, dsm5, Opilion, MattMoney, big lumby, TristEndo, DuccBoi, 
+//Super_Femicom, awks, DanonZer, 9sphere, Bingies24, and blower5 (that's me!)
 SUBTITLES = [
 	"Search your worst, find your best!"
 	,"Vorted bestest search engine since 1323"
@@ -146,7 +147,7 @@ SUBTITLES = [
 	,"hey, I want you to check out this website. Go to www.nfl.com. and just check it out."
 	,"These donuts are great! Jelly filled are my favorite! Nothing beats a jelly filled donut."
 	,"Could you kick up the 4d3d3d3?"
-	,"Consummate V's!"'
+	,"Consummate V's!"
 	,"How do you type with boxing gloves on?"
 	,"RISE FROM YOUR GRAVE"
 	,"THERE IT IS"
