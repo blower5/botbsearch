@@ -72,7 +72,7 @@ SUBTITLES = [
 	,"i wont distract u. go ahead and do what u need to do"
 	,"Also try emtries.com!"
 	,"Tracker?? I hardly know 'er!"
-	,"Battle of the fruits would have all the info in the 'lycheeum' lol"
+	,"Battle of the fruits would have all the info in the \"lycheeum\" lol"
 	,"Do u really know what youre looking for or are you just fucking around? i won't judge"
 	,"If your search doesn't produce any results, try curling up into a ball and crying"
 	,"I would like to see the results of this search"
@@ -124,6 +124,7 @@ SUBTITLES = [
 
 	
 	//----------blower's arcane pop culture and chiptune references----------
+	,"Farm to table search goodness, from jangler and blower."
 	,"\"My God, it's full of bits!\""
 	,"what is this 8 bit poop crap"
 	,"I'm quitting chiptune."
