@@ -8,6 +8,19 @@
 	--textshadow: #666666;
 }
 
+@keyframes exactmatch {
+	0% {
+		color: var(--color2);
+	}
+	50%  {
+		color: var(--color1);
+	}
+	100% {
+		color: var(--color2);
+	}
+}
+
+
 html, body {
 	background-color: var(--color5);
 	background-image: url(https://battleofthebits.com/disk/debris/botb_bg.png);
@@ -78,6 +91,14 @@ td {
   border-bottom: 0px !important;
   color: var(--color1) !important;
 }
+
+
+tr.exactmatch > td {
+  font-weight: bold;
+}
+tr.exactmatch > td > a {
+  animation: exactmatch 2s ease-in-out infinite;
+}  
 
 
 tr:nth-child(2n) > td {
