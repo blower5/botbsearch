@@ -97,7 +97,7 @@ tr.exactmatch > td {
   font-weight: bold;
 }
 tr.exactmatch > td > a {
-  animation: exactmatch 2s ease-in-out infinite;
+  animation: exactmatch 1s ease-in-out infinite;
 }  
 
 
