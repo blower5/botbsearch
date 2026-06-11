@@ -70,6 +70,24 @@ function addResult(query, tbody, typestr, format, url, name, extrainfo, datetime
 
 	tbody.appendChild(tr);
 	
+	
+	//escape is new!
+	if (!RegExp.escape) {
+		RegExp.escape = function (string) {
+			//escape syntax characters
+			escaped = string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+			//escape first char (if alphanumeric) and non syntax characters and whitespace
+			function replacer(ch) {
+				hex = ch.codePointAt(0).toString(16);
+				if (hex.length == 1 | hex.length == 3) hex = "0" + hex;
+				return "\\x"+hex;
+			}
+			escaped = escaped.replace(/^\w|[ ,-=<>#&!%:;@~'`"\s]/g, replacer);
+			return escaped;
+		}
+	}
+	
+	
 	//check if the name is an exact match for the search, and highlight the row.
 	//for xhb entries, an extra check is done that tries ignoring the filetype.
 	exact = false;
@@ -302,7 +320,7 @@ function searchByName(query,ftype,results) {
 			break;
 		case "entry":
 			searchEndpoint('entry/search/', query, 'Entry', (data) =>
-				data.forEach(e => addResult(query, results, 'Entry' + formatBattleType(e.type), e.format_token, e.profile_url, e.title, formatEntryScore(e.score,e.favs), e.datetime)));
+				data.forEach(e => addResult(query, results, 'Entry' + formatBattleType(e.battle.type), e.format_token, e.profile_url, e.title, formatEntryScore(e.score,e.favs), e.datetime)));
 			break;
 		case "playlist":
 			searchEndpoint('playlist/search/', query, 'Playlist', (data) =>
