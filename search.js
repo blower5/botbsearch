@@ -92,11 +92,11 @@ function addResult(query, tbody, typestr, format, url, name, extrainfo, datetime
 	//for xhb entries, an extra check is done that tries ignoring the filetype.
 	exact = false;
 	if (typestr == "Entry") {
-		if (name.search(RegExp("^"+RegExp.escape(query)+"(\\.[^.]+)?$","i")) != -1) {
+		if (name.search(RegExp("^"+RegExp.escape(query.trim())+"(\\.[^.]+)?$","i")) != -1) {
 			exact = true;
 		}
 	} else {
-		if (name.toLowerCase() == query.toLowerCase() ) {
+		if (name.toLowerCase() == query.trim().toLowerCase() ) {
 			exact = true;
 		}
 	}
