@@ -195,7 +195,7 @@ function updateSpritesheet() {
 	spritesheetidreq.send();
 }
 
-const grouplist = ["???","Bulletins","News","???","Entries","Battles","Photos","Updates","n00b s0z","mail","Bugs/Features","Smeesh","Project Dev","BotBrs","Lyceum"];
+const grouplist = ["???","Bulletins","News","???","Entries","Battles","Photos","Updates","n00b s0z","mail","Bugs/Features","Smeesh","Project Dev","BotBrs","Lyceum","Releases"];
 function getThreadGroupName(groupnumber) {
 	let groupname = grouplist[groupnumber];
 	groupname ??= "???";
@@ -203,7 +203,7 @@ function getThreadGroupName(groupnumber) {
 	return groupname;
 }
 
-const groupiconlist = ["","bulletins","news","","entries","battles","","updates","n00b","","bug","","updates","botbrs","lyceum"];
+const groupiconlist = ["","bulletins","news","","entries","battles","","updates","n00b","","bug","","updates","botbrs","lyceum","optical_disc"];
 function getThreadGroupIcon(groupnumber) {
 	let groupicon = groupiconlist[groupnumber];
 	if (groupicon) {
